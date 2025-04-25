@@ -3,6 +3,8 @@ const storyForm = document.getElementById("storyForm");
 const storyDetail = document.getElementById("storyDetail");
 const tagFilter = document.getElementById("tagFilter");
 const secretToggle = document.getElementById("secretToggle");
+const NOTION_TOKEN = "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";  // Integrationのトークン
+const DATABASE_ID = "1e04fe9c77ff8014a74ef26d550b8c44";  // データベースのID
 
 let editingStoryId = null;
 let currentFilter = null;
@@ -340,9 +342,6 @@ renderTimelineView(currentFilter);
 }
 }
 
-const NOTION_TOKEN = "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";  // Integrationのトークン
-const DATABASE_ID = "1e04fe9c77ff8014a74ef26d550b8c44";  // データベースのID
-
 async function saveToNotion(story) {
 const res = await fetch("https://api.notion.com/v1/pages", {
 method: "POST",
@@ -414,8 +413,8 @@ headers: {
 });
 
 fetchStoriesFromNotion().then(notionStories => {
-  localStorage.setItem("stories", JSON.stringify(notionStories));
-  renderStories();
+localStorage.setItem("stories", JSON.stringify(notionStories));
+renderStories();
 }).catch(console.error);
 
 const data = await res.json();

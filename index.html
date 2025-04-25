@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Story Archive</title>
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho&display=swap" rel="stylesheet">
+  <script src="https://kit.fontawesome.com/b522b4c581.js" crossorigin="anonymous"></script>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1 class="text-3xl font-bold mb-4">
+        <span id="secretToggle" class="cursor-pointer hover:animate-pulse"><i class="fa-solid fa-book-open"></i></span>
+        My Short Stories
+      </h1>
+      <div class="header-button-flex">
+        <div class="header-button">
+          <button id="newStoryBtn"><i class="fa-solid fa-pen-to-square"></i><span> 新しい投稿</span></button>
+          <button onclick="toggleSortOrder()" id="sortToggleBtn"><i class="fa-solid fa-arrow-down"></i><span> 新順</span></button>
+          <button onclick="toggleViewMode()" id="viewModeBtn"><i class="fa-solid fa-calendar-days"></i><span> 年表モード</span></button>      
+        </div>
+      </div>
+    </header>
+    
+    <div id="tagFilter" class="tag-filter-container">
+      <!-- JSで中に
+           <div class="tag-section">…</div>
+           <div class="tag-section cp-tags">…</div>
+           <div class="tag-section normal-tags">…</div> -->
+    </div>    
+
+    <div class="in-ex">
+      <button onclick="exportStories()"><i class="fa-solid fa-download"></i> エクスポート</button>
+      <label class="button-like" style="margin-left: 0.5rem;">
+        <i class="fa-solid fa-upload"></i> インポート
+        <input type="file" accept="application/json" onchange="importStories(event)" style="display: none;">
+      </label>
+    </div>
+
+
+    <section id="storyList"></section>
+
+    <section id="storyForm" class="hidden">
+      <h2><i class="fa-solid fa-pen-nib"></i> 新しいストーリー</h2>
+      <input type="text" id="titleInput" placeholder="タイトル" />
+      <textarea id="contentInput" placeholder="本文"></textarea>
+      <input type="text" id="tagsInput" placeholder="タグ（スペース区切り）" />
+      <button id="saveBtn">保存</button>
+      <button id="cancelBtn">キャンセル</button>
+    </section>
+
+    <section id="storyDetail" class="hidden"></section>
+  </div>
+
+  <script src="main.js"></script>
+</body>
+</html>

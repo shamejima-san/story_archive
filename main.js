@@ -351,7 +351,6 @@ function toggleViewMode() {
 }
 
 async function saveToNotion(story) {
-  console.log("Notionへ送信準備:", story);
   const res = await fetch("https://api.notion.com/v1/pages", {
     method: "POST",
     headers: {

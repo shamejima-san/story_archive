@@ -1,0 +1,288 @@
+body {
+  margin: 0;
+  font-family: 'Zen Kaku Gothic New', sans-serif;
+  background-color: #121212;
+  color: #e0e0e0;
+}
+
+textarea,
+input,
+select,
+button,
+p {
+	font: inherit;
+}
+.container {
+  max-width: 700px;
+  margin: 2rem auto;
+  padding: 1rem;
+}
+
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+button , .button-like{
+  background-color: #1f2937;
+  color: #e0e0e0;
+  border: none;
+  padding: 0.5rem 1rem;
+  /*margin-top: 1rem;*/
+  border-radius: 0.5rem;
+  cursor: pointer;
+  font-size: small;
+}
+
+.in-ex{
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 1rem;
+}
+
+button:hover {
+  background-color: #374151;
+}
+.button-like:hover {
+  background-color: #374151;
+}
+
+input, textarea {
+  display: block;
+  width: 100%;
+  margin-top: 0.5rem;
+  padding: 0.5rem;
+  background: #2d2d2d;
+  color: #e0e0e0;
+  border: 1px solid #444;
+  border-radius: 0.5rem;
+}
+
+textarea {
+  min-height: 150px;
+}
+
+i {
+  display: inline-block;
+  width: 1.2em;
+  text-align: center;
+}
+
+.story-card {
+  background: #1e1e1e;
+  border-radius: 0.5rem;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  cursor: pointer;
+  transition: 0.2s;
+  padding-bottom: 2em;
+}
+
+.story-card:hover {
+  background: #292929;
+}
+
+.tag {
+  display: inline-block;
+  background: #374151;
+  color: #cbd5e1;
+  padding: 0.2rem 0.5rem;
+  margin-right: 0.3rem;
+  border-radius: 0.3rem;
+  font-size: 0.8rem;
+}
+
+.hidden {
+  display: none;
+}
+
+.fav-icon {
+  font-size: 1.5em;
+  padding: 0.2em;
+  border-radius: 50%;
+  background-color: transparent;
+  transition: all 0.4s ease;
+  display: inline-block;
+}
+  
+.fav-icon.active {
+  color: gold;
+  text-shadow:
+    0 0 4px rgba(255, 215, 0, 0.7),
+    0 0 8px rgba(255, 215, 0, 0.5),
+    0 0 12px rgba(255, 215, 0, 0.3);
+}
+  
+.fav-icon.active:hover {
+  text-shadow:
+    0 0 6px rgba(255, 215, 0, 0.9),
+    0 0 14px rgba(255, 215, 0, 0.6),
+    0 0 20px rgba(255, 215, 0, 0.4);
+  transform: scale(1.1);
+}  
+
+.tag-button {
+  font-family: 'Noto Sans JP', sans-serif;
+  padding: 0.3em 0.6em;
+  margin: 0 0.3em;
+  border-radius: 9999px;
+  background-color: #333;
+  color: #e0e0e0;
+  font-size: 0.9rem;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+.tag-button:hover {
+  background-color: #555;
+}
+
+#newStoryBtn{
+  font-family: 'Noto Sans JP', sans-serif;
+}
+
+#tagFilter {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.tag-filter-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5em;
+  margin-bottom: 2em;
+}
+
+.tag-section {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5em;
+  align-items: center;
+}
+
+.tag-group-title {
+  font-weight: bold;
+  margin-bottom: 0.5em;
+}
+
+
+
+@media (max-width: 768px) {
+
+  .story-card {
+    background: #333;
+    border-radius: 12px;
+    padding: 0.5rem 1rem;
+    margin-bottom: 1rem;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    transition: transform 0.2s ease;
+  }
+
+  .story-card:hover {
+    transform: scale(1.01);
+  }
+
+  .story-card h3 {
+    font-size: 1.1rem;
+    margin-bottom: 0.5em;
+    font-weight: bold;
+  }
+
+  .story-card .tag {
+    font-size: 0.75rem;
+    background: #333;
+    padding: 0.2em 0.5em;
+    border-radius: 0.5em;
+    margin-right: 0.3em;
+    display: inline-block;
+    margin-top: 0.5em;
+  }
+
+  .fav-icon {
+    font-size: 1.2rem;
+    color: #888;
+    cursor: pointer;
+  }
+
+  .fav-icon.active {
+    color: #f39c12;
+  }
+  header {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+    padding: 0 1rem;
+    margin-bottom: 1rem;
+  }
+
+  header h1 {
+    font-size: 1.4rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    line-height: 1.2;
+  }
+
+  div.header-button-flex{
+    display: flex;
+    justify-content: flex-end;
+    width: 100%;
+  }
+
+  div.header-button{
+    display: flex;
+  }
+
+  header button {
+    font-size: 0.9rem;
+    padding: 0 0.6rem;
+    border-radius: 6px;
+    background-color: #333;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    margin-left: 0.5em;
+    margin-top: 0;
+  }
+
+  header button i {
+    font-size: 1.2rem;
+    margin-right: 0;
+  }
+
+  /* ボタン内のテキストをspanで分ける前提 */
+  header button span {
+    display: none; /* スマホではテキストだけ非表示 */
+  }
+
+  #viewModeBtn,
+  #sortToggleBtn {
+    width: 100%;
+  }
+
+  #viewModeBtn,
+  #sortToggleBtn {
+    width: auto;
+    padding: 0.5rem;
+  }
+
+  #viewModeBtn::after,
+  #sortToggleBtn::after {
+    content: '';
+    display: none; /* テキストを消す */
+  }
+
+  h2{
+    font-size: 1.2rem;
+  }
+
+  input, textarea{
+    padding: 0;
+  }
+
+}

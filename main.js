@@ -84,7 +84,6 @@ document.getElementById("saveBtn").addEventListener("click", async () => {
 });
 
 // --- ストーリー描画系 ---
-
 function formatContent(content) {
   const match = content.match(/^CP:(.+)/);
   if (match) {
@@ -187,7 +186,6 @@ function renderTagList(stories) {
 }
 
 // --- 詳細表示 ---
-
 function showDetail(story) {
   storyDetail.classList.remove("hidden");
   storyList.classList.add("hidden");
@@ -222,7 +220,6 @@ function backToList() {
 }
 
 // --- 編集・削除・お気に入り ---
-
 function toggleFavorite(id) {
   const stories = JSON.parse(localStorage.getItem("stories") || "[]");
   const idx = stories.findIndex(s => s.id === id);
@@ -256,7 +253,6 @@ function editStory(id) {
 }
 
 // --- シークレット切替 ---
-
 secretToggle.addEventListener("click", () => {
   showSecret = !showSecret;
   secretToggle.innerHTML = showSecret
@@ -270,7 +266,6 @@ secretToggle.addEventListener("click", () => {
 });
 
 // --- ソート切替 ---
-
 function toggleSortOrder() {
   sortOrder = (sortOrder === "desc") ? "asc" : "desc";
   if (currentView === "list") {
@@ -281,7 +276,6 @@ function toggleSortOrder() {
 }
 
 // --- 年月日グループの年表表示 ---
-
 function renderTimelineView(filterTag = null) {
   const stories = JSON.parse(localStorage.getItem("stories") || "[]");
   const groupedByDate = {};
@@ -344,7 +338,6 @@ function renderTimelineView(filterTag = null) {
 }
 
 // --- ビュー切替 ---
-
 function toggleViewMode() {
   currentView = (currentView === "list") ? "timeline" : "list";
   const viewBtn = document.getElementById("viewModeBtn");
@@ -357,9 +350,8 @@ function toggleViewMode() {
   }
 }
 
-
-
 async function saveToNotion(story) {
+  console.log("Notionへ送信準備:", story);
   const res = await fetch("https://api.notion.com/v1/pages", {
     method: "POST",
     headers: {
@@ -378,6 +370,7 @@ async function saveToNotion(story) {
         "UUID": { rich_text: [{ text: { content: story.id } }] }
       }
     })
+    
   });
 
   if (!res.ok) {

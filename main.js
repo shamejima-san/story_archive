@@ -369,7 +369,6 @@ async function saveToNotion(story) {
         "UUID": { rich_text: [{ text: { content: story.id } }] }
       }
     })
-    
   });
 
   if (!res.ok) {

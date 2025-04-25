@@ -7,11 +7,25 @@ const secretToggle = document.getElementById("secretToggle");
 let editingStoryId = null;
 let currentFilter = null;
 let showSecret = false;
-let sortOrder = "desc"; // 新しい順（デフォルト）
-let currentView = "list"; // "list" or "timeline"
+let sortOrder = "desc";
+let currentView = "list";
 
-// --- イベント系 ---
+const NOTION_TOKEN = "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";
+const DATABASE_ID = "1e04fe9c77ff8014a74ef26d550b8c44";
 
+// --- 初期ロードでNotionからデータ取得 ---
+window.addEventListener("DOMContentLoaded", async () => {
+  try {
+    const storiesFromNotion = await fetchStoriesFromNotion();
+    localStorage.setItem("stories", JSON.stringify(storiesFromNotion));
+    renderStories();
+  } catch (err) {
+    console.error("Notionからの取得に失敗", err);
+    renderStories(); // fallback
+  }
+});
+
+// --- 新規ボタン ---
 document.getElementById("newStoryBtn").addEventListener("click", () => {
   storyForm.classList.remove("hidden");
   storyDetail.classList.add("hidden");
@@ -22,12 +36,14 @@ document.getElementById("newStoryBtn").addEventListener("click", () => {
   document.getElementById("tagsInput").value = "";
 });
 
+// --- キャンセルボタン ---
 document.getElementById("cancelBtn").addEventListener("click", () => {
   storyForm.classList.add("hidden");
   storyList.classList.remove("hidden");
 });
 
-document.getElementById("saveBtn").addEventListener("click", () => {
+// --- 保存ボタン ---
+document.getElementById("saveBtn").addEventListener("click", async () => {
   const title = document.getElementById("titleInput").value.trim();
   const content = document.getElementById("contentInput").value.trim();
   const tags = document.getElementById("tagsInput").value
@@ -45,20 +61,22 @@ document.getElementById("saveBtn").addEventListener("click", () => {
       stories[index].title = title;
       stories[index].content = content;
       stories[index].tags = tags;
+      await saveToNotion(stories[index]); // 🆕 編集保存時にNotion送信
     }
   } else {
-    stories.unshift({
+    const newStory = {
       id: crypto.randomUUID(),
       title,
       content,
       tags,
       favorite: false,
       createdAt: new Date().toISOString()
-    });
+    };
+    stories.unshift(newStory);
+    await saveToNotion(newStory); // 🆕 新規保存時にNotion送信
   }
 
   localStorage.setItem("stories", JSON.stringify(stories));
-
   editingStoryId = null;
   storyForm.classList.add("hidden");
   storyList.classList.remove("hidden");
@@ -339,42 +357,7 @@ function toggleViewMode() {
   }
 }
 
-// function exportStories() {
-//   const stories = JSON.parse(localStorage.getItem("stories") || "[]");
-//   const blob = new Blob([JSON.stringify(stories, null, 2)], { type: "application/json" });
-//   const url = URL.createObjectURL(blob);
 
-//   const a = document.createElement("a");
-//   a.href = url;
-//   a.download = "my_stories_backup.json";
-//   document.body.appendChild(a);
-//   a.click();
-//   document.body.removeChild(a);
-//   URL.revokeObjectURL(url);
-// }
-
-// function importStories(event) {
-//   const file = event.target.files[0];
-//   if (!file) return;
-
-//   const reader = new FileReader();
-//   reader.onload = function(e) {
-//     try {
-//       const imported = JSON.parse(e.target.result);
-//       if (!Array.isArray(imported)) throw new Error("形式が違います");
-//       const existing = JSON.parse(localStorage.getItem("stories") || "[]");
-//       localStorage.setItem("stories", JSON.stringify([...imported, ...existing]));
-//       alert("インポート完了！");
-//       renderStories();
-//     } catch (err) {
-//       alert("読み込みに失敗しました：" + err.message);
-//     }
-//   };
-//   reader.readAsText(file);
-// }
-
-const NOTION_TOKEN = "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";  // Integrationのトークン
-const DATABASE_ID = "1e04fe9c77ff8014a74ef26d550b8c44";  // データベースのID
 
 async function saveToNotion(story) {
   const res = await fetch("https://api.notion.com/v1/pages", {
@@ -382,47 +365,17 @@ async function saveToNotion(story) {
     headers: {
       "Authorization": `Bearer ${NOTION_TOKEN}`,
       "Content-Type": "application/json",
-      "Notion-Version": "2022-06-28" // 最新のAPIバージョン
+      "Notion-Version": "2022-06-28" 
     },
     body: JSON.stringify({
       parent: { database_id: DATABASE_ID },
       properties: {
-        "タイトル": {
-          title: [
-            {
-              text: {
-                content: story.title
-              }
-            }
-          ]
-        },
-        "本文": {
-          rich_text: [
-            {
-              text: {
-                content: story.content
-              }
-            }
-          ]
-        },
-        "タグ": {
-          multi_select: story.tags.map(tag => ({ name: tag }))
-        },
-        "お気に入り": {
-          checkbox: story.favorite || false
-        },
-        "投稿日時": {
-          date: {
-            start: story.createdAt || new Date().toISOString()
-          }
-        },
-        "UUID": {
-          rich_text: [
-            {
-              text: { content: story.id }
-            }
-          ]
-        }
+        "タイトル": { title: [{ text: { content: story.title } }] },
+        "本文": { rich_text: [{ text: { content: story.content } }] },
+        "タグ": { multi_select: story.tags.map(tag => ({ name: tag })) },
+        "お気に入り": { checkbox: story.favorite || false },
+        "投稿日時": { date: { start: story.createdAt || new Date().toISOString() } },
+        "UUID": { rich_text: [{ text: { content: story.id } }] }
       }
     })
   });
@@ -436,6 +389,7 @@ async function saveToNotion(story) {
   }
 }
 
+// --- Notionから取得 ---
 async function fetchStoriesFromNotion() {
   const res = await fetch(`https://api.notion.com/v1/databases/${DATABASE_ID}/query`, {
     method: "POST",
@@ -461,6 +415,5 @@ async function fetchStoriesFromNotion() {
 
   return stories;
 }
-
 
 renderStories();

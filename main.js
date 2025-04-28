@@ -455,6 +455,8 @@ async function fetchStoriesFromNotion() {
     }
   });
 
+  const data = await response.json(); // ←ここを修正！
+  
   const stories = data.results.map(page => {
     const props = page.properties;
     return {
@@ -463,7 +465,7 @@ async function fetchStoriesFromNotion() {
       content: props["本文"].rich_text[0]?.text.content || "",
       tags: props["タグ"].multi_select.map(t => t.name),
       favorite: props["お気に入り"].checkbox,
-      createdAt: props["投稿日時"].date?.start || new Date().toISOString(), // ←ここ！
+      createdAt: props["投稿日時"].date?.start || new Date().toISOString(),
       notionPageId: page.id
     };
   });

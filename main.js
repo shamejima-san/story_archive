@@ -275,8 +275,8 @@ async function deleteFromNotion(pageId) {
     })
   });
 
-  if (!res.ok) {
-    const data = await res.json();
+  if (!response.ok) {
+    const data = await response.json();
     console.error("Notion削除失敗", data);
     throw new Error("Notion削除エラー");
   }

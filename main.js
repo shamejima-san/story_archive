@@ -262,7 +262,7 @@ async function deleteStory(id) {
   renderStories(currentFilter);
 }
 
-async function deleteFromNotion(pageId) {
+async function deleteFromNotion(notionPageId) {
   const response = await fetch(`${API_BASE_URL}/delete/${notionPageId}`, {
     method: "PATCH",
     headers: {
@@ -383,7 +383,7 @@ function toggleViewMode() {
 async function saveToNotion(story, notionPageId = null) {
   if (notionPageId) {
     // --- 既存ページを更新（PATCH） ---
-    const response = await fetch(`${API_BASE_URL}/update/${pageId}`, {
+    const response = await fetch(`${API_BASE_URL}/update/${notionPageId}`, {
       method: "PATCH",
       headers: {
         "Authorization": `Bearer ${NOTION_TOKEN}`,

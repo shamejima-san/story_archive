@@ -263,7 +263,7 @@ async function deleteStory(id) {
 }
 
 async function deleteFromNotion(pageId) {
-  const response = await fetch(`${API_BASE_URL}/delete/${pageId}`, {
+  const response = await fetch(`${API_BASE_URL}/delete/${notionPageId}`, {
     method: "PATCH",
     headers: {
       "Authorization": `Bearer ${NOTION_TOKEN}`,

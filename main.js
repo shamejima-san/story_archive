@@ -262,7 +262,7 @@ async function deleteStory(id) {
 }
 
 async function deleteFromNotion(pageId) {
-  const res = await fetch(`https://api.notion.com/v1/pages/${pageId}`, {
+  const res = await fetch(`https://notion-api-worker.story-archive.workers.dev/delete/${pageId}`, {
     method: "PATCH",
     headers: {
       "Authorization": `Bearer ${NOTION_TOKEN}`,
@@ -382,7 +382,7 @@ function toggleViewMode() {
 async function saveToNotion(story, notionPageId = null) {
   if (notionPageId) {
     // --- 既存ページを更新（PATCH） ---
-    const res = await fetch(`https://api.notion.com/v1/pages/${notionPageId}`, {
+    const res = await fetch(`https://notion-api-worker.story-archive.workers.dev/update/${notionPageId}`, {
       method: "PATCH",
       headers: {
         "Authorization": `Bearer ${NOTION_TOKEN}`,
@@ -411,7 +411,7 @@ async function saveToNotion(story, notionPageId = null) {
     }
   } else {
     // --- 新規作成（POST） ---
-    const res = await fetch("https://api.notion.com/v1/pages", {
+    const res = await fetch("https://notion-api-worker.story-archive.workers.dev/create", {
       method: "POST",
       headers: {
         "Authorization": `Bearer ${NOTION_TOKEN}`,
@@ -445,7 +445,7 @@ async function saveToNotion(story, notionPageId = null) {
 
 // --- Notionから取得 ---
 async function fetchStoriesFromNotion() {
-  const res = await fetch(`https://api.notion.com/v1/databases/${DATABASE_ID}/query`, {
+  const res = await fetch(`https://notion-api-worker.story-archive.workers.dev/fetch${DATABASE_ID}/query`, {
     method: "POST",
     headers: {
       "Authorization": `Bearer ${NOTION_TOKEN}`,

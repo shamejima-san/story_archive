@@ -402,8 +402,8 @@ async function saveToNotion(story, notionPageId = null) {
       })
     });
 
-    if (!res.ok) {
-      const err = await res.json();
+    if (!response.ok) {
+      const err = await response.json();
       console.error("Notion更新失敗", err);
       throw new Error("更新失敗");
     } else {
@@ -432,9 +432,9 @@ async function saveToNotion(story, notionPageId = null) {
       })
     });
 
-    const data = await res.json();
+    const data = await response.json();
 
-    if (!res.ok) {
+    if (!response.ok) {
       console.error("Notion作成失敗", data);
       throw new Error("作成失敗");
     } else {
@@ -455,7 +455,7 @@ async function fetchStoriesFromNotion() {
     }
   });
 
-  const data = await res.json();
+  const data = await response.json();
   const stories = data.results.map(page => {
     const props = page.properties;
     return {

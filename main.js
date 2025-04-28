@@ -3,6 +3,7 @@ const storyForm = document.getElementById("storyForm");
 const storyDetail = document.getElementById("storyDetail");
 const tagFilter = document.getElementById("tagFilter");
 const secretToggle = document.getElementById("secretToggle");
+const API_BASE_URL = "https://notion-api-worker.story-archive.workers.dev";
 
 let editingStoryId = null;
 let currentFilter = null;
@@ -262,7 +263,7 @@ async function deleteStory(id) {
 }
 
 async function deleteFromNotion(pageId) {
-  const res = await fetch(`https://notion-api-worker.story-archive.workers.dev/delete/${pageId}`, {
+  const response = await fetch(`${API_BASE_URL}/delete/${storyId}`, {
     method: "PATCH",
     headers: {
       "Authorization": `Bearer ${NOTION_TOKEN}`,
@@ -382,7 +383,7 @@ function toggleViewMode() {
 async function saveToNotion(story, notionPageId = null) {
   if (notionPageId) {
     // --- 既存ページを更新（PATCH） ---
-    const res = await fetch(`https://notion-api-worker.story-archive.workers.dev/update/${notionPageId}`, {
+    const response = await fetch(`${API_BASE_URL}/update/${storyId}`, {
       method: "PATCH",
       headers: {
         "Authorization": `Bearer ${NOTION_TOKEN}`,
@@ -411,7 +412,7 @@ async function saveToNotion(story, notionPageId = null) {
     }
   } else {
     // --- 新規作成（POST） ---
-    const res = await fetch("https://notion-api-worker.story-archive.workers.dev/create", {
+    const response = await fetch(`${API_BASE_URL}/create`, {
       method: "POST",
       headers: {
         "Authorization": `Bearer ${NOTION_TOKEN}`,
@@ -445,7 +446,7 @@ async function saveToNotion(story, notionPageId = null) {
 
 // --- Notionから取得 ---
 async function fetchStoriesFromNotion() {
-  const res = await fetch(`https://notion-api-worker.story-archive.workers.dev/fetch${DATABASE_ID}/query`, {
+  const response = await fetch(`${API_BASE_URL}/fetch`, {
     method: "POST",
     headers: {
       "Authorization": `Bearer ${NOTION_TOKEN}`,

@@ -235,39 +235,39 @@ function toggleFavorite(id) {
   }
 }
 
-function exportStories() {
-  const stories = JSON.parse(localStorage.getItem("stories") || "[]");
-  const blob = new Blob([JSON.stringify(stories, null, 2)], { type: "application/json" });
-  const url = URL.createObjectURL(blob);
+// function exportStories() {
+//   const stories = JSON.parse(localStorage.getItem("stories") || "[]");
+//   const blob = new Blob([JSON.stringify(stories, null, 2)], { type: "application/json" });
+//   const url = URL.createObjectURL(blob);
 
-  const a = document.createElement("a");
-  a.href = url;
-  a.download = "my_stories_backup.json";
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
-  URL.revokeObjectURL(url);
-}
+//   const a = document.createElement("a");
+//   a.href = url;
+//   a.download = "my_stories_backup.json";
+//   document.body.appendChild(a);
+//   a.click();
+//   document.body.removeChild(a);
+//   URL.revokeObjectURL(url);
+// }
 
-function importStories(event) {
-  const file = event.target.files[0];
-  if (!file) return;
+// function importStories(event) {
+//   const file = event.target.files[0];
+//   if (!file) return;
 
-  const reader = new FileReader();
-  reader.onload = function(e) {
-    try {
-      const imported = JSON.parse(e.target.result);
-      if (!Array.isArray(imported)) throw new Error("形式が違います");
-      const existing = JSON.parse(localStorage.getItem("stories") || "[]");
-      localStorage.setItem("stories", JSON.stringify([...imported, ...existing]));
-      alert("インポート完了！");
-      renderStories();
-    } catch (err) {
-      alert("読み込みに失敗しました：" + err.message);
-    }
-  };
-  reader.readAsText(file);
-}
+//   const reader = new FileReader();
+//   reader.onload = function(e) {
+//     try {
+//       const imported = JSON.parse(e.target.result);
+//       if (!Array.isArray(imported)) throw new Error("形式が違います");
+//       const existing = JSON.parse(localStorage.getItem("stories") || "[]");
+//       localStorage.setItem("stories", JSON.stringify([...imported, ...existing]));
+//       alert("インポート完了！");
+//       renderStories();
+//     } catch (err) {
+//       alert("読み込みに失敗しました：" + err.message);
+//     }
+//   };
+//   reader.readAsText(file);
+// }
 
 async function deleteStory(id) {
   let stories = JSON.parse(localStorage.getItem("stories") || "[]");

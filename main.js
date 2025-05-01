@@ -19,11 +19,17 @@ window.addEventListener("DOMContentLoaded", async () => {
   try {
     const storiesFromNotion = await fetchStoriesFromNotion();
     localStorage.setItem("stories", JSON.stringify(storiesFromNotion));
-    renderStories();
   } catch (err) {
     console.error("Notionからの取得に失敗", err);
-    renderStories(); // fallback
   }
+  // ⬇ ボタンがあるか確認してからイベント登録
+  const sortBtn = document.getElementById("sortToggleBtn");
+  if (sortBtn) {
+    sortBtn.addEventListener("click", toggleSortOrder);
+  } else {
+    console.warn("sortToggleBtnが見つからないよ！");
+  }
+  renderStories(); // ←これが一番最後
 });
 
 // --- 新規ボタン ---
@@ -125,8 +131,6 @@ function renderStories(filterTag = null) {
   if (sortBtn) {
     sortBtn.innerHTML = sortOrder === "desc" ? '<i class="fa-solid fa-arrow-down"></i><span> 新順</span>' : '<i class="fa-solid fa-arrow-up"></i><span> 古順</span>';
   }
-
-  document.getElementById("sortToggleBtn").addEventListener("click", toggleSortOrder);
 
   storyList.innerHTML = "";
 

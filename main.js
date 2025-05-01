@@ -8,7 +8,7 @@ const API_BASE_URL = "https://notion-api-worker.story-archive.workers.dev";
 let editingStoryId = null;
 let currentFilter = null;
 let showSecret = false;
-let sortOrder = "desc";
+let sortOrder = "asc";
 let currentView = "list";
 
 const NOTION_TOKEN = "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";

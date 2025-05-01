@@ -24,8 +24,6 @@ window.addEventListener("DOMContentLoaded", async () => {
     console.error("Notionからの取得に失敗", err);
     renderStories(); // fallback
   }
-
-  document.getElementById("sortToggleBtn").addEventListener("click", toggleSortOrder);
 });
 
 // --- 新規ボタン ---
@@ -127,6 +125,8 @@ function renderStories(filterTag = null) {
   if (sortBtn) {
     sortBtn.innerHTML = sortOrder === "desc" ? '<i class="fa-solid fa-arrow-down"></i><span> 新順</span>' : '<i class="fa-solid fa-arrow-up"></i><span> 古順</span>';
   }
+
+  document.getElementById("sortToggleBtn").addEventListener("click", toggleSortOrder);
 
   storyList.innerHTML = "";
 

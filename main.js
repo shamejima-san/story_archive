@@ -24,6 +24,8 @@ window.addEventListener("DOMContentLoaded", async () => {
     console.error("Notionからの取得に失敗", err);
     renderStories(); // fallback
   }
+
+  document.getElementById("sortToggleBtn").addEventListener("click", toggleSortOrder);
 });
 
 // --- 新規ボタン ---

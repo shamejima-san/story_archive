@@ -17,6 +17,7 @@ const DATABASE_ID = "1e04fe9c77ff805b9575c2213cebb41b";
 
 // --- 初期ロードでNotionからデータ取得 ---
 window.addEventListener("DOMContentLoaded", async () => {
+  sortOrder = "asc";
   try {
     const storiesFromNotion = await fetchStoriesFromNotion();
     localStorage.setItem("stories", JSON.stringify(storiesFromNotion));

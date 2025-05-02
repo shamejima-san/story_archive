@@ -147,7 +147,7 @@ function renderStories(filterTag = null) {
     card.innerHTML = `
       <div style="display: flex; justify-content: space-between; align-items: center;">
         <h3>${story.title}</h3>
-        <span class="fav-icon ${story.favorite ? 'active' : ''}">${favIcon}</span>
+        <span class="fav-icon ${story.favorite ? 'active' : ''}" data-id="${story.id}">${favIcon}</span>
       </div>
       <div>${story.tags.map(tag => `<span class="tag">${tag}</span>`).join("")}</div>
     `;
@@ -156,6 +156,27 @@ function renderStories(filterTag = null) {
     storyList.appendChild(card);
   });
 }
+
+const favIconElement = card.querySelector(".fav-icon");
+favIconElement.addEventListener("click", (event) => {
+  event.stopPropagation();
+
+  const storyId = favIconElement.getAttribute("data-id");
+  if (!storyId) {
+    console.warn("story IDが取得できなかった");
+    return;
+  }
+
+  let stories = JSON.parse(localStorage.getItem("stories") || "[]");
+  stories = stories.map(s => {
+    if (s.id === storyId) s.favorite = !s.favorite;
+    return s;
+  });
+
+  localStorage.setItem("stories", JSON.stringify(stories));
+  renderStories(currentFilter);
+});
+
 
 // --- タグリスト描画 ---
 function renderTagList(stories) {

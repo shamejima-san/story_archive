@@ -130,7 +130,7 @@ function renderStories(filterTag = null) {
 
   const sortBtn = document.getElementById("sortToggleBtn");
   if (sortBtn) {
-    sortBtn.innerHTML = sortOrder === "desc" ? '<i class="fa-solid fa-arrow-down"></i><span> 新順</span>' : '<i class="fa-solid fa-arrow-up"></i><span> 古順</span>';
+    sortBtn.innerHTML = sortOrder === "asc" ? '<i class="fa-solid fa-arrow-down"></i><span> 新順</span>' : '<i class="fa-solid fa-arrow-up"></i><span> 古順</span>';
   }
 
   storyList.innerHTML = "";
@@ -338,7 +338,7 @@ secretToggle.addEventListener("click", () => {
 
 // --- ソート切替 ---
 function toggleSortOrder() {
-  sortOrder = (sortOrder === "desc") ? "asc" : "desc";
+  sortOrder = (sortOrder === "asc") ? "asc" : "desc";
   if (currentView === "list") {
     renderStories(currentFilter);
   } else {

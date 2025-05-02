@@ -10,7 +10,6 @@ let currentFilter = null;
 let showSecret = false;
 let currentView = "list";
 let sortOrder = "asc";
-renderStories();  
 
 const NOTION_TOKEN = "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";
 const DATABASE_ID = "1e04fe9c77ff805b9575c2213cebb41b";

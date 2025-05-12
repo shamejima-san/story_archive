@@ -489,30 +489,44 @@ async function saveToNotion(story, notionPageId = null) {
 
 // --- Notionから取得 ---
 async function fetchStoriesFromNotion() {
-  const response = await fetch(`${API_BASE_URL}/fetch`, {
-    method: "POST",
-    headers: {
-      "Authorization": `Bearer ${NOTION_TOKEN}`,
-      "Content-Type": "application/json",
-      "Notion-Version": "2022-06-28"
-    }
-  });
+  let stories = [];
+  let hasMore = true;
+  let startCursor = null;
 
-  const data = await response.json(); // ←ここを修正！
-  
-  const stories = data.results.map(page => {
-    const props = page.properties;
-    return {
-      id: props.UUID.rich_text[0]?.text.content,
-      title: props["タイトル"].title[0]?.text.content || "無題",
-      content: props["本文"].rich_text[0]?.text.content || "",
-      tags: props["タグ"].multi_select.map(t => t.name),
-      favorite: props["お気に入り"].checkbox,
-      createdAt: props["投稿日時"].date?.start || new Date().toISOString(),
-      notionPageId: page.id
-    };
-  });
-  
+  while (hasMore) {
+    const response = await fetch(`${API_BASE_URL}/fetch`, {
+      method: "POST",
+      headers: {
+        "Authorization": `Bearer ${NOTION_TOKEN}`,
+        "Content-Type": "application/json",
+        "Notion-Version": "2022-06-28"
+      },
+      body: JSON.stringify({
+        page_size: 100,
+        start_cursor: startCursor
+      })
+    });
+
+    const data = await response.json();
+
+    const results = data.results.map(page => {
+      const props = page.properties;
+      return {
+        id: props.UUID.rich_text[0]?.text.content,
+        title: props["タイトル"].title[0]?.text.content || "無題",
+        content: props["本文"].rich_text[0]?.text.content || "",
+        tags: props["タグ"].multi_select.map(t => t.name),
+        favorite: props["お気に入り"].checkbox,
+        createdAt: props["投稿日時"].date?.start || new Date().toISOString(),
+        notionPageId: page.id
+      };
+    });
+
+    stories = stories.concat(results);
+    hasMore = data.has_more;
+    startCursor = data.next_cursor;
+  }
+
   return stories;
 }
 
